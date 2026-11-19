@@ -6,6 +6,10 @@
 // program hands the entry in: it copies app/ and screenshots/ into the
 // output directory and writes dossier.json with the vendored library, so
 // the grader sees exactly the app and the screenshots its maker took.
+// v2 polish: a new Showcase layout (wide hero over 3-over-2), two painted
+// sample scenes bundled with the photos, a hotter two-tone title treatment
+// with a gold rule and edition chip, and a richer editor (sample tray,
+// layout chips, shuffle and panel swap).
 //
 // A working gta6-cover-art-01 entry (Node 22, standard library only): the app is this directory's app/ folder, plain
 // static files a desktop browser loads offline (app/index.html and its ES modules, no library and no network

@@ -1,93 +1,101 @@
-// Panel layouts for Vice Panel, the multi-panel cover art maker.
+// Panel layouts for Vice Panel v2.
 //
-// Every layout is described in fractions of the whole canvas, so the same
-// scene renders identically in the live preview and in an exported PNG of
-// any size. A layout names where its title sits ('top' in its own band,
-// 'overlay' across the foot of the art) and the panels a photo can fill.
-// The renderer in cover.js insets each panel by a gutter, which leaves the
-// warm white poster gutters GTA-style covers are known for.
+// Every layout is described in fractions so the same composition renders at
+// the editor's preview size and at each export size. `band` is the fraction
+// of the canvas height reserved for the title block at the top; the panels
+// tile the area below it, and each panel rect is a fraction of that area.
+// A band of 0 means the title is overlaid on the art itself (Full Bleed).
 
 export const LAYOUTS = [
   {
-    id: 'hero',
-    name: 'Hero Poster',
-    titlePosition: 'top',
-    titleFraction: 0.18,
+    id: 'showcase',
+    label: 'Showcase',
+    band: 0.155,
     panels: [
-      { x: 0, y: 0.18, w: 1 / 3, h: 0.4 },
-      { x: 1 / 3, y: 0.18, w: 1 / 3, h: 0.4 },
-      { x: 2 / 3, y: 0.18, w: 1 / 3, h: 0.4 },
-      { x: 0, y: 0.58, w: 0.5, h: 0.42 },
-      { x: 0.5, y: 0.58, w: 0.5, h: 0.42 },
+      { x: 0, y: 0, w: 1, h: 0.38 },
+      { x: 0, y: 0.38, w: 1 / 3, h: 0.32 },
+      { x: 1 / 3, y: 0.38, w: 1 / 3, h: 0.32 },
+      { x: 2 / 3, y: 0.38, w: 1 / 3, h: 0.32 },
+      { x: 0, y: 0.70, w: 0.5, h: 0.30 },
+      { x: 0.5, y: 0.70, w: 0.5, h: 0.30 },
     ],
   },
   {
-    id: 'cover-story',
-    name: 'Cover Story',
-    titlePosition: 'top',
-    titleFraction: 0.16,
+    id: 'hero',
+    label: 'Hero Poster',
+    band: 0.16,
     panels: [
-      { x: 0, y: 0.16, w: 0.52, h: 0.58 },
-      { x: 0.52, y: 0.16, w: 0.48, h: 0.29 },
-      { x: 0.52, y: 0.45, w: 0.48, h: 0.29 },
-      { x: 0, y: 0.74, w: 1, h: 0.26 },
+      { x: 0, y: 0, w: 1 / 3, h: 0.48 },
+      { x: 1 / 3, y: 0, w: 1 / 3, h: 0.48 },
+      { x: 2 / 3, y: 0, w: 1 / 3, h: 0.48 },
+      { x: 0, y: 0.48, w: 0.5, h: 0.52 },
+      { x: 0.5, y: 0.48, w: 0.5, h: 0.52 },
+    ],
+  },
+  {
+    id: 'coverstory',
+    label: 'Cover Story',
+    band: 0.15,
+    panels: [
+      { x: 0, y: 0, w: 0.55, h: 0.70 },
+      { x: 0.55, y: 0, w: 0.45, h: 0.70 },
+      { x: 0, y: 0.70, w: 1, h: 0.30 },
     ],
   },
   {
     id: 'duo',
-    name: 'Duo Split',
-    titlePosition: 'top',
-    titleFraction: 0.16,
+    label: 'Duo Split',
+    band: 0.145,
     panels: [
-      { x: 0, y: 0.16, w: 0.5, h: 0.84 },
-      { x: 0.5, y: 0.16, w: 0.5, h: 0.84 },
+      { x: 0, y: 0, w: 0.5, h: 1 },
+      { x: 0.5, y: 0, w: 0.5, h: 1 },
     ],
   },
   {
     id: 'quad',
-    name: 'Quad Grid',
-    titlePosition: 'top',
-    titleFraction: 0.16,
+    label: 'Quad Grid',
+    band: 0.15,
     panels: [
-      { x: 0, y: 0.16, w: 0.5, h: 0.42 },
-      { x: 0.5, y: 0.16, w: 0.5, h: 0.42 },
-      { x: 0, y: 0.58, w: 0.5, h: 0.42 },
-      { x: 0.5, y: 0.58, w: 0.5, h: 0.42 },
+      { x: 0, y: 0, w: 0.5, h: 0.5 },
+      { x: 0.5, y: 0, w: 0.5, h: 0.5 },
+      { x: 0, y: 0.5, w: 0.5, h: 0.5 },
+      { x: 0.5, y: 0.5, w: 0.5, h: 0.5 },
     ],
   },
   {
-    id: 'full-bleed',
-    name: 'Full Bleed',
-    titlePosition: 'overlay',
-    titleFraction: 0,
+    id: 'fullbleed',
+    label: 'Full Bleed',
+    band: 0,
     panels: [{ x: 0, y: 0, w: 1, h: 1 }],
   },
 ];
 
-/** The layout with this id, or the Hero Poster when the id is unknown. */
 export function layoutById(id) {
-  return LAYOUTS.find((layout) => layout.id === id) ?? LAYOUTS[0];
+  return LAYOUTS.find((l) => l.id === id) ?? LAYOUTS[0];
 }
 
-/** A layout's panel rectangles in pixels for a canvas of width x height. */
-export function panelRects(layout, width, height) {
-  return layout.panels.map((panel) => ({
-    x: panel.x * width,
-    y: panel.y * height,
-    w: panel.w * width,
-    h: panel.h * height,
-  }));
+// Pixel rects for a layout on a canvas of w x h, with `gutter` px of poster
+// paper showing between panels. Returns { bandH, rects: [{x,y,w,h}...] }.
+export function panelRects(layout, w, h, gutter) {
+  const bandH = Math.round(h * layout.band);
+  const areaH = h - bandH;
+  const rects = layout.panels.map((p) => {
+    const x = p.x * w;
+    const y = bandH + p.y * areaH;
+    const pw = p.w * w;
+    const ph = p.h * areaH;
+    const gx = p.x === 0 ? gutter : gutter / 2;
+    const gy = p.y === 0 ? gutter : gutter / 2;
+    const gw = p.x + p.w >= 1 ? gutter : gutter / 2;
+    const gh = p.y + p.h >= 1 ? gutter : gutter / 2;
+    return { x: x + gx, y: y + gy, w: pw - gx - gw, h: ph - gy - gh };
+  });
+  return { bandH, rects };
 }
 
-/** The title band's rectangle in pixels, or null for an overlay title. */
-export function titleBandRect(layout, width, height) {
-  if (layout.titlePosition !== 'top') return null;
-  return { x: 0, y: 0, w: width, h: layout.titleFraction * height };
-}
-
-/** The index of the panel under a canvas point, or -1 when none is hit. */
-export function panelIndexAt(layout, width, height, px, py) {
-  const rects = panelRects(layout, width, height);
+// Index of the panel under a canvas point, or -1 (title band / gutter).
+export function panelAt(layout, w, h, gutter, px, py) {
+  const { rects } = panelRects(layout, w, h, gutter);
   for (let i = rects.length - 1; i >= 0; i--) {
     const r = rects[i];
     if (px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h) return i;

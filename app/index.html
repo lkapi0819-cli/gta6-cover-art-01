@@ -3,98 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice Panel — Multi-Panel Cover Art Maker</title>
+<title>Vice Panel — GTA-style cover art maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div class="app-shell">
-  <header class="app-header">
-    <div class="brand">
-      <h1>Vice Panel</h1>
-      <p class="tagline">Your photos, cut into a sunset-city poster. Multi-panel cover art in three post sizes — made on your machine, nothing uploaded.</p>
+<header class="topbar">
+  <div class="brand">
+    <h1>Vice <span>Panel</span></h1>
+    <p>Multi-panel cover art, made from your photos</p>
+  </div>
+  <div class="top-actions">
+    <button id="shuffleBtn" type="button">Shuffle panels</button>
+    <button id="swapBtn" type="button" aria-pressed="false">Swap panels</button>
+    <div class="export-group" role="group" aria-label="Export PNG">
+      <button id="exportSquare" type="button">PNG 1080 × 1080</button>
+      <button id="exportPortrait" type="button">PNG 1080 × 1350</button>
+      <button id="exportWide" type="button">PNG 1920 × 1080</button>
     </div>
-    <p class="header-note">1 · Add photos&ensp;2 · Click a panel, drag to frame it&ensp;3 · Export the PNG</p>
-  </header>
+  </div>
+</header>
 
-  <main class="editor-layout">
-    <aside class="control-panel">
-      <section class="control-group">
-        <h2>Photos</h2>
-        <label class="file-picker">Add your photos
-          <input id="photoInput" type="file" accept="image/*" multiple>
-        </label>
-        <div class="button-row">
-          <button id="samplePier" type="button">Use pier sample</button>
-          <button id="sampleBlvd" type="button">Use boulevard sample</button>
-        </div>
-        <div id="tray" class="photo-tray"></div>
-        <button id="fillAll" type="button" class="wide-button">Fill all panels with my photos</button>
-      </section>
-
-      <section class="control-group">
-        <h2>Layout</h2>
-        <label>Poster layout
-          <select id="layoutSelect"></select>
-        </label>
-      </section>
-
-      <section class="control-group">
-        <h2>Caption</h2>
-        <label>Title
-          <input id="titleInput" type="text" maxlength="30" value="VICE HEAT">
-        </label>
-        <label>Subtitle
-          <input id="subtitleInput" type="text" maxlength="44" value="SUNSET CITY STORIES">
-        </label>
-      </section>
-
-      <section class="control-group">
-        <h2>Selected panel</h2>
-        <p id="panelLabel" class="panel-label">Panel 1</p>
-        <label>Panel filter
-          <select id="panelFilter"></select>
-        </label>
-        <label>Zoom
-          <input id="zoomRange" type="range" min="1" max="3.5" step="0.05" value="1">
-        </label>
-        <div class="button-row">
-          <button id="resetPanel" type="button">Reset framing</button>
-          <button id="clearPanel" type="button">Clear panel</button>
-        </div>
-      </section>
-
-      <section class="control-group">
-        <h2>Colour grade</h2>
-        <label>Grade
-          <select id="gradeSelect"></select>
-        </label>
-        <label>Grade strength
-          <input id="gradeRange" type="range" min="0" max="1" step="0.05" value="0.85">
-        </label>
-        <label class="check-row"><input id="grainToggle" type="checkbox" checked> Film grain</label>
-        <label class="check-row"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
-      </section>
-
-      <section class="control-group">
-        <h2>Export PNG</h2>
-        <div class="export-row">
-          <button id="exportSquare" type="button">1080 × 1080</button>
-          <button id="exportPortrait" type="button">1080 × 1350</button>
-          <button id="exportWide" type="button">1920 × 1080</button>
-        </div>
-      </section>
-    </aside>
-
-    <section class="preview-area">
-      <canvas id="coverCanvas" width="1080" height="1350" aria-label="Live preview of your cover art"></canvas>
-      <p class="preview-hint">Click a panel to select it · drag to reposition its photo · scroll to zoom</p>
+<main class="workspace">
+  <aside class="panel">
+    <section>
+      <h2>Layout</h2>
+      <div id="layoutChips" class="chips"></div>
     </section>
-  </main>
 
-  <footer class="app-footer">
-    <p id="status" role="status">Panels start as painted sunset scenes — add a photo and it takes the panel over.</p>
-  </footer>
-</div>
+    <section>
+      <h2>Photos</h2>
+      <label class="upload-btn" for="photoInput">Add your photos</label>
+      <input id="photoInput" type="file" accept="image/*" multiple hidden>
+      <div id="tray" class="tray" aria-label="Photo tray"></div>
+      <p class="hint">Pick a photo, then click a panel to drop it in — or click a panel first and drag it into place.</p>
+    </section>
+
+    <section>
+      <h2>Caption</h2>
+      <label>Title <input id="titleInput" type="text" maxlength="26" value="Vice Heat"></label>
+      <label>Subtitle <input id="subInput" type="text" maxlength="42" value="Sunset City Stories"></label>
+    </section>
+
+    <section>
+      <h2>Selected panel</h2>
+      <p id="panelLabel" class="panel-label">Panel 1</p>
+      <div id="filterChips" class="chips"></div>
+      <label>Zoom <input id="zoomRange" type="range" min="1" max="3" step="0.01" value="1"></label>
+      <button id="clearPanelBtn" type="button" class="ghost">Empty this panel</button>
+    </section>
+
+    <section>
+      <h2>Finish</h2>
+      <label>Colour grade <input id="gradeRange" type="range" min="0" max="100" step="1" value="70"></label>
+      <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
+    </section>
+  </aside>
+
+  <section class="stage">
+    <canvas id="cover" width="880" height="1100" aria-label="Cover preview"></canvas>
+    <p id="status" class="status" role="status"></p>
+  </section>
+</main>
+
+<footer class="foot">Vice Panel runs fully offline — your photos never leave this machine.</footer>
+
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
