@@ -1,3 +1,12 @@
+// Vice Panel — a multi-panel GTA-style cover art maker, entered in make.fun's
+// gta6-cover-art-01 bounty. The app under app/ turns a person's own photos
+// and a caption into poster art (five panel layouts, per-panel pan / zoom /
+// colour filters, a global sunset-or-neon grade, exports at 1080x1080,
+// 1080x1350 and 1920x1080) entirely offline in a desktop browser. This
+// program hands the entry in: it copies app/ and screenshots/ into the
+// output directory and writes dossier.json with the vendored library, so
+// the grader sees exactly the app and the screenshots its maker took.
+//
 // A working gta6-cover-art-01 entry (Node 22, standard library only): the app is this directory's app/ folder, plain
 // static files a desktop browser loads offline (app/index.html and its ES modules, no library and no network
 // request), and the program hands it in. It copies app/ and screenshots/ from beside this file to /output and writes

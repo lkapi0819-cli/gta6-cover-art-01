@@ -3,21 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Vice Panel — Multi-Panel Cover Art Maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
-  </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
-</main>
+<div class="app-shell">
+  <header class="app-header">
+    <div class="brand">
+      <h1>Vice Panel</h1>
+      <p class="tagline">Your photos, cut into a sunset-city poster. Multi-panel cover art in three post sizes — made on your machine, nothing uploaded.</p>
+    </div>
+    <p class="header-note">1 · Add photos&ensp;2 · Click a panel, drag to frame it&ensp;3 · Export the PNG</p>
+  </header>
+
+  <main class="editor-layout">
+    <aside class="control-panel">
+      <section class="control-group">
+        <h2>Photos</h2>
+        <label class="file-picker">Add your photos
+          <input id="photoInput" type="file" accept="image/*" multiple>
+        </label>
+        <div class="button-row">
+          <button id="samplePier" type="button">Use pier sample</button>
+          <button id="sampleBlvd" type="button">Use boulevard sample</button>
+        </div>
+        <div id="tray" class="photo-tray"></div>
+        <button id="fillAll" type="button" class="wide-button">Fill all panels with my photos</button>
+      </section>
+
+      <section class="control-group">
+        <h2>Layout</h2>
+        <label>Poster layout
+          <select id="layoutSelect"></select>
+        </label>
+      </section>
+
+      <section class="control-group">
+        <h2>Caption</h2>
+        <label>Title
+          <input id="titleInput" type="text" maxlength="30" value="VICE HEAT">
+        </label>
+        <label>Subtitle
+          <input id="subtitleInput" type="text" maxlength="44" value="SUNSET CITY STORIES">
+        </label>
+      </section>
+
+      <section class="control-group">
+        <h2>Selected panel</h2>
+        <p id="panelLabel" class="panel-label">Panel 1</p>
+        <label>Panel filter
+          <select id="panelFilter"></select>
+        </label>
+        <label>Zoom
+          <input id="zoomRange" type="range" min="1" max="3.5" step="0.05" value="1">
+        </label>
+        <div class="button-row">
+          <button id="resetPanel" type="button">Reset framing</button>
+          <button id="clearPanel" type="button">Clear panel</button>
+        </div>
+      </section>
+
+      <section class="control-group">
+        <h2>Colour grade</h2>
+        <label>Grade
+          <select id="gradeSelect"></select>
+        </label>
+        <label>Grade strength
+          <input id="gradeRange" type="range" min="0" max="1" step="0.05" value="0.85">
+        </label>
+        <label class="check-row"><input id="grainToggle" type="checkbox" checked> Film grain</label>
+        <label class="check-row"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
+      </section>
+
+      <section class="control-group">
+        <h2>Export PNG</h2>
+        <div class="export-row">
+          <button id="exportSquare" type="button">1080 × 1080</button>
+          <button id="exportPortrait" type="button">1080 × 1350</button>
+          <button id="exportWide" type="button">1920 × 1080</button>
+        </div>
+      </section>
+    </aside>
+
+    <section class="preview-area">
+      <canvas id="coverCanvas" width="1080" height="1350" aria-label="Live preview of your cover art"></canvas>
+      <p class="preview-hint">Click a panel to select it · drag to reposition its photo · scroll to zoom</p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p id="status" role="status">Panels start as painted sunset scenes — add a photo and it takes the panel over.</p>
+  </footer>
+</div>
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
